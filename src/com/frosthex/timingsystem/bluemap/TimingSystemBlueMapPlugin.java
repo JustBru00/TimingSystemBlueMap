@@ -71,50 +71,37 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 			}	
 		}
 		
-		Bukkit.getScheduler().scheduleSyncDelayedTask(instance, new Runnable() {
+		BlueMapAPI.onEnable(api -> {
+			// When BlueMap is enabled, run this code. Also works for /bluemap reload.
+			MarkerSet markerSet = MarkerSet.builder().label("TimingSystem Track Locations").toggleable(true).build();
 			
-			@Override
-			public void run() {
-				Messager.msgConsole("&6Adding track POI markers to BlueMap...");
-				Optional<BlueMapAPI> possibleApi = BlueMapAPI.getInstance();
-				if (!possibleApi.isPresent()) {
-					Messager.msgConsole("&cBlueMapAPI wasn't ready. Cancelling marker addition...");
-					return;
-				}
-				Messager.msgConsole("&6BlueMapAPI was ready...");
-				BlueMapAPI api = possibleApi.get();
-				
-				MarkerSet markerSet = MarkerSet.builder().label("TimingSystem Track Locations").toggleable(true).build();					
+			for (Track track : TimingSystemAPI.getTracks()) {
+				double x = track.getSpawnLocation().getX();
+				double y = track.getSpawnLocation().getY();
+				double z = track.getSpawnLocation().getZ();
 					
-				for (Track track : TimingSystemAPI.getTracks()) {
-					double x = track.getSpawnLocation().getX();
-					double y = track.getSpawnLocation().getY();
-					double z = track.getSpawnLocation().getZ();
-						
-					POIMarker marker = POIMarker.builder()
-							.label(track.getCommandName())
-							.position(x, y, z)
-							.maxDistance(1000)
-							.build();
-						
-					markerSet.getMarkers().put("tt-" + track.getCommandName(), marker);		
+				POIMarker marker = POIMarker.builder()
+						.label(track.getCommandName())
+						.detail("Total Finishes: " + track.getTotalFinishes())
+						.position(x, y, z)
+						.maxDistance(10000)
+						.build();				
+			
+				Optional<BlueMapWorld> possibleWorld = api.getWorld(track.getSpawnLocation().getWorld());
+				if (!possibleWorld.isPresent()) {
+					Messager.msgConsole("&cBlueMapWorld wasn't able to be found... Skipping adding marker for track " + track.getCommandName());
+					continue;
+				}				
+				BlueMapWorld blueWorld = possibleWorld.get();
 				
-					Optional<BlueMapWorld> possibleWorld = api.getWorld(track.getSpawnLocation().getWorld());
-					if (!possibleWorld.isPresent()) {
-						Messager.msgConsole("&cBlueMapWorld wasn't able to be found... Cancelling...");
-						return;
-					}
-					Messager.msgConsole("&6BlueMapWorld loaded... Attempting to add the marker set...");
-					BlueMapWorld blueWorld = possibleWorld.get();
-				
-					for (BlueMapMap map : blueWorld.getMaps()) {
-						map.getMarkerSets().put("timingsystem-bluemap-tracks", markerSet);
-					}	
-						
-				}					
-							
+				markerSet.getMarkers().put("tt-" + track.getCommandName(), marker);		
+			
+				for (BlueMapMap map : blueWorld.getMaps()) {
+					map.getMarkerSets().put("timingsystem-bluemap-tracks", markerSet);
+				}	
+					
 			}
-		}, 20*60);
+		});
 	}
 	
 	public static TimingSystemBlueMapPlugin getInstance() {
