@@ -1,4 +1,4 @@
-package com.frosthex.timingsystem.bluemap;
+package com.justbru00.timingsystem.bluemap;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -8,7 +8,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.frosthex.timingsystem.bluemap.utils.Messager;
+import com.justbru00.timingsystem.bluemap.utils.Messager;
+import com.justbru00.timingsystem.bluemap.bstats.BStats;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.BlueMapMap;
@@ -41,6 +42,7 @@ import me.makkuusen.timing.system.track.Track;
 public class TimingSystemBlueMapPlugin extends JavaPlugin {
 	
 	private static TimingSystemBlueMapPlugin instance;
+	private static final int BSTATS_PLUGIN_ID = 18483;
     
 	public static ConsoleCommandSender clogger = Bukkit.getServer().getConsoleSender();
 	public static Logger log = Bukkit.getLogger();
@@ -71,6 +73,10 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 			}	
 		}
 		
+		BStats metrics = new BStats(this, BSTATS_PLUGIN_ID);
+		String timingSystemVersion = timingSystem.getDescription().getVersion();
+		metrics.addCustomChart(new BStats.SimplePie("timingsystem_version", () -> timingSystemVersion));
+		
 		BlueMapAPI.onEnable(api -> {
 			// When BlueMap is enabled, run this code. Also works for /bluemap reload.
 			MarkerSet markerSet = MarkerSet.builder().label("TimingSystem Track Locations").toggleable(true).build();
@@ -82,7 +88,8 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 					
 				POIMarker marker = POIMarker.builder()
 						.label(track.getCommandName())
-						.detail("Total Finishes: " + track.getTotalFinishes())
+						.detail(track.getCommandName() + "\nTotal Finishes: " + track.getTotalFinishes()
+						+ "\nTotal Attempts: " + track.getTotalAttempts())
 						.position(x, y, z)
 						.maxDistance(10000)
 						.build();				

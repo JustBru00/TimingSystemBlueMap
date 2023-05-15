@@ -3,7 +3,7 @@
  * 
  * This is class is licensed under the MPL Version 2.0.
  */ 
-package com.frosthex.timingsystem.bluemap.utils;
+package com.justbru00.timingsystem.bluemap.utils;
 
 import java.awt.Color;
 import java.util.regex.Matcher;
@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.frosthex.timingsystem.bluemap.TimingSystemBlueMapPlugin;
+import com.justbru00.timingsystem.bluemap.TimingSystemBlueMapPlugin;
 
 public class Messager {	
 	
