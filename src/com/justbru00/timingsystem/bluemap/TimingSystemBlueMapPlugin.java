@@ -88,8 +88,9 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 					
 				POIMarker marker = POIMarker.builder()
 						.label(track.getCommandName())
-						.detail(track.getCommandName() + "\nTotal Finishes: " + track.getTotalFinishes()
-						+ "\nTotal Attempts: " + track.getTotalAttempts())
+						.detail("<p style=\"text-align: center;\">" + track.getCommandName() + "</p>"
+						+ "<p style=\"text-align: center;\">Total Finishes: " + track.getTotalFinishes() + "</p>"
+						+ "<p style=\"text-align: center;\">Total Attempts: " + track.getTotalAttempts() + "</p>")
 						.position(x, y, z)
 						.maxDistance(10000)
 						.build();				
