@@ -43,6 +43,7 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 	
 	private static TimingSystemBlueMapPlugin instance;
 	private static final int BSTATS_PLUGIN_ID = 18483;
+	private static final String[] TIMING_SYSTEM_SUPPORTED_VERSIONS = {"1.2", "1.3"};
     
 	public static ConsoleCommandSender clogger = Bukkit.getServer().getConsoleSender();
 	public static Logger log = Bukkit.getLogger();
@@ -68,9 +69,19 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 			return;
 		} else {
 			// TimingSystem version check
-			if (!timingSystem.getDescription().getVersion().contains("1.2")) {
-				Messager.msgConsole("&cTimingSystemBlueMap only supports TimingSystem version 1.2 at this time. The plugin will attempt to run but you may encounter errors.");
-			}	
+			String timingSystemVersion = timingSystem.getDescription().getVersion();
+			boolean supportedVersion = false;
+			for (String version : TIMING_SYSTEM_SUPPORTED_VERSIONS) {
+				if (timingSystemVersion.contains(version)) {
+					supportedVersion = true;
+					break;
+				}
+			}		
+			
+			if (!supportedVersion) {
+				Messager.msgConsole("&cTimingSystemBlueMap version " + getDescription().getVersion() + " doesn't support TimingSystem version "
+			+ timingSystemVersion + ". The add-on will attempt to run as normal, but you may encounter issues.");
+			}
 		}
 		
 		BStats metrics = new BStats(this, BSTATS_PLUGIN_ID);
