@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.justbru00.timingsystem.bluemap.utils.Messager;
 import com.justbru00.timingsystem.bluemap.bstats.BStats;
+import com.justbru00.timingsystem.bluemap.configuration.ConfigurationManager;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.BlueMapMap;
@@ -44,7 +45,8 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 	private static TimingSystemBlueMapPlugin instance;
 	private static final int BSTATS_PLUGIN_ID = 18483;
 	private static final String[] TIMING_SYSTEM_SUPPORTED_VERSIONS = {"1.2", "1.3"};
-    
+	
+	public static String PLUGIN_VERSION = null;    
 	public static ConsoleCommandSender clogger = Bukkit.getServer().getConsoleSender();
 	public static Logger log = Bukkit.getLogger();
 	
@@ -60,7 +62,18 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		Messager.msgConsole("&6Starting TimingSystemBlueMap " + getDescription().getVersion() + "...");
+		
+		PLUGIN_VERSION = TimingSystemBlueMapPlugin.getInstance().getDescription().getVersion();
+		Messager.msgConsole("&6Starting TimingSystemBlueMap " + PLUGIN_VERSION + "...");		
+		
+		saveDefaultConfig();
+		
+		if (ConfigurationManager.doesConfigYmlNeedUpdated()) {
+			Messager.msgConsole("&c[WARN] The config.yml file version is incorrect. TimingSystemBlueMap v" + PLUGIN_VERSION +
+					" expects a config.yml version of " + ConfigurationManager.CONFIG_VERSION + 
+					". Attempting to add missing values to the config file.");
+			ConfigurationManager.updateConfigYml();
+		}
 		
 		Plugin timingSystem = Bukkit.getPluginManager().getPlugin("TimingSystem");
 		if (timingSystem == null) {
@@ -79,7 +92,7 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 			}		
 			
 			if (!supportedVersion) {
-				Messager.msgConsole("&cTimingSystemBlueMap version " + getDescription().getVersion() + " doesn't support TimingSystem version "
+				Messager.msgConsole("&cTimingSystemBlueMap version " + PLUGIN_VERSION + " doesn't support TimingSystem version "
 			+ timingSystemVersion + ". The add-on will attempt to run as normal, but you may encounter issues.");
 			}
 		}
@@ -93,6 +106,13 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 			MarkerSet markerSet = MarkerSet.builder().label("TimingSystem Track Locations").toggleable(true).build();
 			
 			for (Track track : TimingSystemAPI.getTracks()) {
+				// ISSUE #1
+				if (TimingSystemBlueMapPlugin.getInstance().getConfig().getBoolean("poi_markers.tracks.spawn_locations.hide_closed_tracks")) {
+					if (!track.isOpen()) {
+						continue;
+					}
+				} // END ISSUE #1
+				
 				double x = track.getSpawnLocation().getX();
 				double y = track.getSpawnLocation().getY();
 				double z = track.getSpawnLocation().getZ();
