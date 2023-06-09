@@ -5,7 +5,7 @@
 
 	<groupId>com.justbru00</groupId>
 	<artifactId>timingsystem.bluemap</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-RC1</version>
 	<packaging>jar</packaging>
 
 	<name>timingsystem.bluemap</name>
