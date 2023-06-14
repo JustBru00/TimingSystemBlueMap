@@ -97,6 +97,14 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 			}
 		}
 		
+		Plugin bluemap = Bukkit.getPluginManager().getPlugin("BlueMap");
+		if (bluemap == null) {
+			// BlueMap isn't installed.
+			Messager.msgConsole("&cBlueMap isn't installed on this server. There is no point to have this addon.");
+			Bukkit.getPluginManager().disablePlugin(instance);
+			return;
+		}
+		
 		BStats metrics = new BStats(this, BSTATS_PLUGIN_ID);
 		String timingSystemVersion = timingSystem.getDescription().getVersion();
 		metrics.addCustomChart(new BStats.SimplePie("timingsystem_version", () -> timingSystemVersion));
