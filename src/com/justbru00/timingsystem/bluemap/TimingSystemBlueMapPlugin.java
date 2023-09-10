@@ -44,7 +44,7 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 	
 	private static TimingSystemBlueMapPlugin instance;
 	private static final int BSTATS_PLUGIN_ID = 18483;
-	private static final String[] TIMING_SYSTEM_SUPPORTED_VERSIONS = {"1.2", "1.3"};
+	private static final String[] TIMING_SYSTEM_SUPPORTED_VERSIONS = {"1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8"};
 	
 	public static String PLUGIN_VERSION = null;    
 	public static ConsoleCommandSender clogger = Bukkit.getServer().getConsoleSender();
