@@ -54,6 +54,7 @@ public class ConfigUpdater {
 		updateConfigYmlBoolean("poi_markers.tracks.spawn_locations.hide_closed_tracks", false);
 	}
 
+	@SuppressWarnings("unused")
 	private static void updateConfigYmlInteger(String path, int updatedValue) {
 		if (!config.isSet(path)) {
 			// Path doesn't exist.
@@ -63,6 +64,7 @@ public class ConfigUpdater {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void updateConfigYmlString(String path, String updatedValue) {
 		if (!config.isSet(path)) {
 			// Path doesn't exist.
@@ -81,6 +83,7 @@ public class ConfigUpdater {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void updateConfigYmlStringList(String path, String... updatedValue) {
 		if (!config.isSet(path)) {
 			// Path doesn't exist.

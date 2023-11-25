@@ -145,8 +145,7 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 			
 				for (BlueMapMap map : blueWorld.getMaps()) {
 					map.getMarkerSets().put("timingsystem-bluemap-tracks", markerSet);
-				}	
-					
+				}					
 			}
 		});
 	}
