@@ -1,5 +1,5 @@
 name: TimingSystemBlueMap
-version: 0.0.3
+version: 0.0.4
 authors: [Justin Brubaker (JustBru00)]
 softdepend: [TimingSystem,BlueMap]
 main: com.justbru00.timingsystem.bluemap.TimingSystemBlueMapPlugin
