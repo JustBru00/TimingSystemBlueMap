@@ -44,7 +44,7 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 	
 	private static TimingSystemBlueMapPlugin instance;
 	private static final int BSTATS_PLUGIN_ID = 18483;
-	private static final String[] TIMING_SYSTEM_SUPPORTED_VERSIONS = {"1.9"};
+	private static final String[] TIMING_SYSTEM_SUPPORTED_VERSIONS = {"2.0"};
 	
 	public static String PLUGIN_VERSION = null;    
 	public static ConsoleCommandSender clogger = Bukkit.getServer().getConsoleSender();
@@ -128,8 +128,8 @@ public class TimingSystemBlueMapPlugin extends JavaPlugin {
 				POIMarker marker = POIMarker.builder()
 						.label(track.getCommandName())
 						.detail("<p style=\"text-align: center;\">" + track.getCommandName() + "</p>"
-						+ "<p style=\"text-align: center;\">Total Finishes: " + track.getTotalFinishes() + "</p>"
-						+ "<p style=\"text-align: center;\">Total Attempts: " + track.getTotalAttempts() + "</p>")
+						+ "<p style=\"text-align: center;\">Total Finishes: " + track.getTimeTrials().getTotalFinishes() + "</p>"
+						+ "<p style=\"text-align: center;\">Total Attempts: " + track.getTimeTrials().getTotalAttempts() + "</p>")
 						.position(x, y, z)
 						.maxDistance(10000)
 						.build();				
